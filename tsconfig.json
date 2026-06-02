@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    // Qual versão do JavaScript o TS vai gerar
+    // ES2022 é moderno e funciona bem no Node.js atual
+    "target": "ES2022",
+
+    // Sistema de módulos — CommonJS é o padrão do Node.js
+    // É o que permite usar require/import no Node
+    "module": "nodenext",
+
+    // Como o TS encontra os arquivos importados
+    // "node" = comportamento padrão do Node.js
+    "moduleResolution": "nodenext",
+
+    // Onde estão seus arquivos TypeScript
+    "rootDir": "./src",
+
+    // Onde o TS vai colocar os arquivos JavaScript compilados
+    "outDir": "./dist",
+
+    // Ativa as tipagens do Node.js (@types/node que você instalou)
+    "types": ["node"],
+
+    // Ativa todas as verificações rígidas de tipo — bom pra aprender
+    "strict": true,
+
+    // Permite importar módulos CommonJS de forma mais simples
+    "esModuleInterop": true,
+
+    // Ignora erros de tipo dentro do node_modules
+    "skipLibCheck": true,
+
+    // Gera mapa pra depuração (ver erros apontando pro .ts e não pro .js)
+    "sourceMap": true
+  },
+
+  // Quais pastas o TypeScript deve olhar
+  "include": ["src"],
+
+  // Quais pastas ignorar
+  "exclude": ["node_modules", "dist"]
+}
