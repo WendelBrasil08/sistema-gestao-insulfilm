@@ -1,6 +1,6 @@
 export interface CriarClienteDTO {
     nome: string;
-    email: string;
+    email?: string;
     whatsapp: string;
 }
 
@@ -13,8 +13,8 @@ export interface AtualizarClienteDTO {
 export interface ClienteDTO {
     id: string;
     nome: string;
-    email: string;
-    whatsapp: string;
+    email?: string;
+    whatsapp?: string;
     criado_em: Date;
 }
 

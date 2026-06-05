@@ -1,6 +1,6 @@
 import { IClienteRepository } from "../repositories/ICLiente_repository";
 
-export class BuscarClienteService {
+export class BuscarClientePorIdService {
     constructor(private clienteRepository: IClienteRepository) {}
 
     async execute(id: string) {

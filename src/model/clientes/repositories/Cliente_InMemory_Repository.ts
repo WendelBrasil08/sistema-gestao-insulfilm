@@ -6,7 +6,11 @@ export class ClienteInMemoryRepository implements IClienteRepository {
     private clientes: ClienteDTO[] = [];
 
     async criar(data: CriarClienteDTO): Promise<ClienteDTO> {
-        const cliente = { ...data, id: randomUUID(), criado_em: new Date() };
+        const cliente = {
+            id: randomUUID(),
+            ...data,
+            criado_em: new Date(),
+        };
         this.clientes.push(cliente);
         return cliente;
     }
@@ -19,6 +23,9 @@ export class ClienteInMemoryRepository implements IClienteRepository {
     }
     async FindbyId(id: string): Promise<ClienteDTO | null> {
         return this.clientes.find(c => c.id === id) || null;
+    }
+    async FindByWhatsapp(whatsapp: string): Promise<ClienteDTO | null> {
+        return this.clientes.find(c => c.whatsapp === whatsapp) || null;
     }
     async consultar(id: string): Promise<ClienteDTO | null> {
         return this.clientes.find(c => c.id === id) || null;

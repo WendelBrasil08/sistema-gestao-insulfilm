@@ -2,7 +2,7 @@ import{ z } from "zod";
 export const CriarClienteSchemas = z.object({
     nome: z.string().min(2,"Nome deve conter no mínimo 2 caracteres"),
     email: z.string().email("email inválido").optional(),
-    whatsapp: z.string().min(10,"whatsapp inválido").optional(),
+    whatsapp: z.string().min(10,"whatsapp inválido"),
 });
 
 export const AtualizarClienteSchemas = z.object({
