@@ -1,4 +1,4 @@
-import { ExcluirClienteDTO } from "../dtos/ClienteDTOs";
+
 import { IClienteRepository } from "../repositories/ICLiente_repository";
 
 export class ExcluirClienteService {

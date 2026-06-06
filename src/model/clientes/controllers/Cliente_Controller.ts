@@ -1,14 +1,13 @@
 import { BuscarClientePorIdService } from "./../services/Buscar_Cliente_service";
-import { BuscarClientePorWhatsappService } from "../services/Buscar_Cliente_Whatsapp_service";
 import { CriarClienteService } from "../services/Criar_Cliente_service";
 import { ExcluirClienteService } from "../services/Excluir_Cliente_service";
 import { ListarClientesService } from "../services/Listar_Clientes_service";
 import { AtualizarClienteService } from "../services/Atualizar_Cliente_service";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { ClienteInMemoryRepository } from "../repositories/Cliente_InMemory_Repository";
+import { clienteRepository } from "../../../shared/database/repositories";
 import * as schemas from "../schemas/Cliente_schemas";
 
-const Repository = new ClienteInMemoryRepository();
+const Repository = clienteRepository;
 
 export class ClienteController {
     async criar(request: FastifyRequest, reply: FastifyReply) {
@@ -25,7 +24,7 @@ export class ClienteController {
     }
 
 
-    async listar(request: FastifyRequest, reply: FastifyReply) {
+    async listar(reply: FastifyReply) {
         const service = new ListarClientesService(Repository);
         const clientes = await service.execute();
         return reply.status(200).send(clientes);
