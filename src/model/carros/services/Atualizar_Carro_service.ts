@@ -7,10 +7,6 @@ export class AtualizarCarroService {
     async execute(data: AtualizarCarroDTO, id: string) {
         if (!id) throw new Error("ID do carro nao informado");
         const existente = await this.carroRepository.consultar(id);
-        const carroComPlaca = await this.carroRepository.BuscarPorPlaca(data.placa);
-        if (carroComPlaca && carroComPlaca.id !== id) {
-            throw new Error("Ja existe um carro com essa placa");
-        }
         if (!existente) {
             throw new Error("Carro nao encontrado");
         }

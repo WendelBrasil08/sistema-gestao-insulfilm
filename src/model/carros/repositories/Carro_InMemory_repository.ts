@@ -9,6 +9,7 @@ export class CarroInMemoryRepository implements ICarroRepository {
             id: randomUUID(),
             ...data,
             criado_em: new Date(),
+            
         };
         this.carros.push(carro);
         return carro;
