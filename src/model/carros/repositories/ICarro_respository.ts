@@ -6,5 +6,5 @@ export interface ICarroRepository {
     excluir(data: ExcluirCarroDTO): Promise<void>;
     BuscarPorPlaca(placa: string): Promise<CarroDTO | null>;
     atualizar(data: AtualizarCarroDTO, id: string): Promise<CarroDTO>;
-    consultar(id: string): Promise<CarroDTO | null>;
+    BuscarPorId(id: string): Promise<CarroDTO | null>;
 }

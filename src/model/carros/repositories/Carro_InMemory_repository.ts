@@ -31,7 +31,7 @@ export class CarroInMemoryRepository implements ICarroRepository {
         this.carros[index] = { ...this.carros[index]!, ...data };
         return this.carros[index]!;
     }
-    async consultar(id: string): Promise<CarroDTO | null> {
+    async BuscarPorId(id: string): Promise<CarroDTO | null> {
         return this.carros.find(c => c.id === id) || null;
     }
 }

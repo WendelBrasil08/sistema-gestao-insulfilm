@@ -21,10 +21,10 @@ export class ClienteInMemoryRepository implements IClienteRepository {
         this.clientes[index] = { ...this.clientes[index]!, ...data };
         return this.clientes[index]!;
     }
-    async FindbyId(id: string): Promise<ClienteDTO | null> {
+    async BuscarPorId(id: string): Promise<ClienteDTO | null> {
         return this.clientes.find(c => c.id === id) || null;
     }
-    async FindByWhatsapp(whatsapp: string): Promise<ClienteDTO | null> {
+    async BuscarPorWhatsapp(whatsapp: string): Promise<ClienteDTO | null> {
         return this.clientes.find(c => c.whatsapp === whatsapp) || null;
     }
     async consultar(id: string): Promise<ClienteDTO | null> {

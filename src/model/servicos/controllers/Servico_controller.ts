@@ -1,7 +1,6 @@
-import { ClienteController } from './../../clientes/controllers/Cliente_Controller';
 import type { FastifyRequest, FastifyReply } from "fastify"
 import { CriarServicoSchemas, AtualizarServicoSchemas, AtualizarStatusSchema } from '../schemas/Servico_schemas'
-import { servicoRepository, carroRepository, clienteRepository } from "../../../shared/database/repositories"
+import { servicoRepository, carroRepository, clienteRepository, estoqueRepository } from "../../../shared/database/repositories"
 import { CriarServicoService } from "../services/Criar_Servico_service"
 import { ListarServicoService } from "../services/Listar_Servico_service"
 import { BuscarServicoService } from "../services/Buscar_Servico_service"
@@ -11,14 +10,11 @@ import { AtualizarStatusServicoService } from "../services/Atualizar_Status_Serv
 import { ExcluirServicoService } from "../services/Excluir_Servico_service"
 import { ServicoStatus } from "../dtos/ServicoDTOs"
 
-const SRepository = servicoRepository;
-const carRepository = carroRepository;
-const ClientRepository = clienteRepository;
-
 export class ServicoController {
     async criar(req: FastifyRequest, res: FastifyReply) {
         const body = CriarServicoSchemas.parse(req.body)
-        const criarServicoService = new CriarServicoService(servicoRepository, clienteRepository, carroRepository)
+        const criarServicoService = new CriarServicoService(estoqueRepository, servicoRepository, clienteRepository, carroRepository);
+     
         try {   
             const servico = await criarServicoService.execute(body)         
             return res.status(201).send(servico)
@@ -33,6 +29,7 @@ export class ServicoController {
         const servicos = await listarServicoService.execute()
         return res.status(200).send(servicos)
     }
+
 
     async buscar(req: FastifyRequest<{ Params: { id: string } }>, res: FastifyReply) {
         const { id } = req.params

@@ -3,8 +3,8 @@ import { CriarClienteDTO, ClienteDTO, ExcluirClienteDTO, AtualizarClienteDTO } f
 export interface IClienteRepository {
     criar(data: CriarClienteDTO): Promise<ClienteDTO>;
     atualizar(id: string, data: AtualizarClienteDTO): Promise<ClienteDTO>;
-    FindbyId(id: string): Promise<ClienteDTO | null>;
-    FindByWhatsapp(whatsapp: string): Promise<ClienteDTO | null>;
+    BuscarPorId(id: string): Promise<ClienteDTO | null>;
+    BuscarPorWhatsapp(whatsapp: string): Promise<ClienteDTO | null>;
     excluir(data: ExcluirClienteDTO): Promise<void>;
     listar(): Promise<ClienteDTO[]>;
 }

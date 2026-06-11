@@ -4,7 +4,7 @@ export class BuscarClientePorIdService {
     constructor(private clienteRepository: IClienteRepository) {}
 
     async execute(id: string) {
-        const cliente = await this.clienteRepository.FindbyId(id);
+        const cliente = await this.clienteRepository.BuscarPorId(id);
         if (!cliente) {
             throw new Error("Cliente não encontrado");
         }

@@ -5,7 +5,7 @@ export class CriarClienteService {
     constructor(private clienteRepository: IClienteRepository) {}
 
     async execute(data: CriarClienteDTO) {
-        const clienteExistente = await this.clienteRepository.FindByWhatsapp(data.whatsapp);
+        const clienteExistente = await this.clienteRepository.BuscarPorWhatsapp(data.whatsapp);
         if (clienteExistente) {
             throw new Error("Ja existe um cliente com esse whatsapp");
         }

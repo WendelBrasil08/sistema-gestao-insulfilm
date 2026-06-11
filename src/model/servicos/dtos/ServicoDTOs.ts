@@ -9,6 +9,7 @@ export interface ServicoDTO {
     id: string;
     clienteId: string;
     carroId: string;
+    materialId: string;
     observacoes?: string;
     tipo_insulfilm: string;
     metragem_usada: number;
@@ -22,6 +23,7 @@ export interface ServicoDTO {
 export interface CriarServicoDTO {
     clienteId: string;
     carroId: string;
+    materialId: string;
     observacoes?: string;
     tipo_insulfilm: string;
     metragem_usada: number;

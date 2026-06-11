@@ -5,7 +5,7 @@ import { CriarCarroDTO } from '../dtos/CarroDTOs';
 export class CriarCarroService {
     constructor(private carroRepository: ICarroRepository, private clienteRepository: IClienteRepository) {}
     async execute(data: CriarCarroDTO) {
-        const clienteExistente = await this.clienteRepository.FindbyId(data.clienteId);
+        const clienteExistente = await this.clienteRepository.BuscarPorId(data.clienteId);
         if (!clienteExistente) {
             throw new Error("Cliente nao encontrado");
         }

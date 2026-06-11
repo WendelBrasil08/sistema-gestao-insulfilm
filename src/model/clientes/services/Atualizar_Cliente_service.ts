@@ -5,12 +5,12 @@ export class AtualizarClienteService {
     async execute(id: string, data: AtualizarClienteDTO) {
         if (!id) throw new Error("ID do cliente nao informado");
         if (data.whatsapp) {
-            const clienteExistente = await this.clienteRepository.FindByWhatsapp(data.whatsapp);
+            const clienteExistente = await this.clienteRepository.BuscarPorWhatsapp(data.whatsapp);
             if (clienteExistente) {
                 throw new Error("Ja existe um cliente com esse whatsapp");
             }
         }
-        const existente = await this.clienteRepository.FindbyId(id);
+        const existente = await this.clienteRepository.BuscarPorId(id);
         if (!existente) {
             throw new Error("Cliente não encontrado");
         }

@@ -5,15 +5,14 @@ import { ListarClientesService } from "../services/Listar_Clientes_service";
 import { AtualizarClienteService } from "../services/Atualizar_Cliente_service";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { clienteRepository } from "../../../shared/database/repositories";
-import * as schemas from "../schemas/Cliente_schemas";
-
-const Repository = clienteRepository;
+import {
+    CriarClienteSchemas,AtualizarClienteSchemas,} from "../schemas//Cliente_schemas";
 
 export class ClienteController {
     async criar(request: FastifyRequest, reply: FastifyReply) {
 
-            const body = schemas.CriarClienteSchemas.parse(request.body);
-            const service = new CriarClienteService(Repository);
+            const body = CriarClienteSchemas.parse(request.body);
+            const service = new CriarClienteService(clienteRepository);
             try {
                 const cliente = await service.execute(body);
                 return reply.status(201).send(cliente);
@@ -25,14 +24,14 @@ export class ClienteController {
 
 
     async listar(reply: FastifyReply) {
-        const service = new ListarClientesService(Repository);
+        const service = new ListarClientesService(clienteRepository);
         const clientes = await service.execute();
         return reply.status(200).send(clientes);
     }
 
     async buscar(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
         const { id } = request.params;
-        const service = new BuscarClientePorIdService(Repository);
+        const service = new BuscarClientePorIdService(clienteRepository);
        try {
            const cliente = await service.execute(id);
            return reply.status(200).send(cliente);
@@ -43,8 +42,8 @@ export class ClienteController {
 
     async atualizar(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
         const { id } = request.params;
-        const body = schemas.AtualizarClienteSchemas.parse(request.body);
-        const service = new AtualizarClienteService(Repository);
+        const body = AtualizarClienteSchemas.parse(request.body);
+        const service = new AtualizarClienteService(clienteRepository);
         try {
             const cliente = await service.execute(id, body);
             return reply.status(200).send(cliente);
@@ -55,7 +54,7 @@ export class ClienteController {
 
     async excluir(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
         const { id } = request.params;
-        const service = new ExcluirClienteService(Repository);
+        const service = new ExcluirClienteService(clienteRepository);
         try {
             await service.execute(id);
             return reply.status(200).send();

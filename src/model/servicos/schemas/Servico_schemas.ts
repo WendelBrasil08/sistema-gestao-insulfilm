@@ -6,6 +6,7 @@ export const CriarServicoSchemas = z.object({
     carroId: z.string().uuid("ID do carro Inválido"),
     observacoes: z.string().max(200, "Observações devem conter no máximo 200 caracteres").optional(),
     tipo_insulfilm: z.string().min(2, "Tipo de insulfilm deve conter no mínimo 2 caracteres").max(100, "Tipo de insulfilm deve conter no máximo 100 caracteres"),
+    materialId: z.string().uuid("ID do material Inválido"),
     metragem_usada: z.coerce.number().positive("Metragem usada deve ser um número positivo"),
     mao_de_obra: z.coerce.number().min(0,"Mão de obra deve ser um número positivo"),
     valor_total: z.coerce.number().positive("Valor total deve ser um número positivo"),

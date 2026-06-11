@@ -1,21 +1,19 @@
-import { carroRepository } from "../../../shared/database/repositories";
-import { clienteRepository } from "../../../shared/database/repositories";
+import { carroRepository, clienteRepository } from "../../../shared/database/repositories";
 import { CriarCarroService } from "../services/Criar_Carro_service";
 import { DeletarCarroService } from "../services/Deletar_Carro_service";
 import { ListarCarroService } from "../services/Listar_Carro_service";
 import { AtualizarCarroService } from "../services/Atualizar_Carro_service";
 import { FastifyReply, FastifyRequest } from "fastify";
-import * as schemas from "../schemas/Carro_Schemas";
-import { ConsultarCarroService } from "../services/Consultar_Carro_service";
+import {
+    CriarCarroSchemas, AtualizarCarroSchemas,} from "../schemas/Carro_Schemas";
 
-const Repository = carroRepository;
-const ClienteRepository = clienteRepository;
+import { BuscarCarroService } from "../services/Buscar_Carro_service";
 
 export class CarroController {
     async criar(request: FastifyRequest, reply: FastifyReply) {
 
-            const body = schemas.CriarCarroSchemas.parse(request.body);
-            const service = new CriarCarroService(Repository, ClienteRepository);
+            const body = CriarCarroSchemas.parse(request.body);
+            const service = new CriarCarroService(carroRepository, clienteRepository);
             try {
                 const carro = await service.execute(body);
                 return reply.status(201).send(carro);
@@ -26,14 +24,14 @@ export class CarroController {
     }
 
     async listar(reply: FastifyReply) {
-        const service = new ListarCarroService(Repository);
+        const service = new ListarCarroService(carroRepository);
         const carros = await service.execute();
         return reply.status(200).send(carros);
     }
 
     async buscar(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
         const { id } = request.params;
-        const service = new ConsultarCarroService(Repository);
+        const service = new BuscarCarroService(carroRepository);
         try {
             const carro = await service.execute(id);
             return reply.status(200).send(carro);
@@ -44,8 +42,8 @@ export class CarroController {
 
     async atualizar(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
         const { id } = request.params;
-        const body = schemas.AtualizarCarroSchemas.parse(request.body);
-        const service = new AtualizarCarroService(Repository);
+        const body = AtualizarCarroSchemas.parse(request.body);
+        const service = new AtualizarCarroService(carroRepository);
         try {
             const carro = await service.execute(body, id);
             return reply.status(200).send(carro);
@@ -56,7 +54,7 @@ export class CarroController {
 
     async excluir(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
         const { id } = request.params;
-        const service = new DeletarCarroService(Repository);
+        const service = new DeletarCarroService(carroRepository);
         try {
             await service.execute({ id });
             return reply.status(200).send();

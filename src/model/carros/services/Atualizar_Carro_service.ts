@@ -6,7 +6,7 @@ export class AtualizarCarroService {
 
     async execute(data: AtualizarCarroDTO, id: string) {
         if (!id) throw new Error("ID do carro nao informado");
-        const existente = await this.carroRepository.consultar(id);
+        const existente = await this.carroRepository.BuscarPorId(id);
         if (!existente) {
             throw new Error("Carro nao encontrado");
         }
