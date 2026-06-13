@@ -1,3 +1,4 @@
+import { BuscarMaterialService } from './../../estoque/services/Buscar_Material_service';
 import type { IServicoRepository } from "../repositories/IServico_repository";
 import type { IEstoqueRepository } from "../../estoque/repositories/IEstoque_repository";
 import { AtualizarServicoDTO} from "../dtos/ServicoDTOs";
@@ -11,14 +12,28 @@ export class AtualizarServicoService {
         }
 
         if(data.metragem_usada){
-             const material = await this.estoqueRepository.BuscarPorId(id);
+            const material = await this.estoqueRepository.BuscarPorId(servicoExistente.materialId);
+            if (!material) throw new Error("Material nao encontrado no estoque");
+            if(data.metragem_usada > material.quantidade) throw new Error("Quantidade de materiais em estoque insuficiente");
+            const diferenca = data.metragem_usada - servicoExistente.metragem_usada;
+            if(diferenca > 0){
+                if(diferenca > material.quantidade) throw new Error("Quantidade de materiais em estoque insuficiente. Há apenas ${material.quantidade} ${material.unidade}");
 
-            if (!material) {
-                throw new Error("Material nao encontrado no estoque");
+                await this.estoqueRepository.registrarBaixa(servicoExistente.materialId, { 
+                    quantidade: diferenca,
+                    motivo: "Ajuste na metragem do Servico #${servicoExistente.id}"
+                 });
+            } else if (diferenca < 0) {
+
+                await this.estoqueRepository.registrarBaixa(servicoExistente.materialId, { 
+                    quantidade: Math.abs(diferenca),
+                    motivo: "Devolucao na metragem do Servico #${servicoExistente.id}"
+                 });
+                
             }
-            if (data.metragem_usada > material.quantidade) {
-                throw new Error("Quantidade de materiais insuficiente");
-            }
+        }
+        if(data.mao_de_obra){
+            servicoExistente.valor_total = (data.mao_de_obra - servicoExistente.mao_de_obra) + servicoExistente.valor_total;
         }
         return await this.servicoRepository.atualizar(id, data);
         

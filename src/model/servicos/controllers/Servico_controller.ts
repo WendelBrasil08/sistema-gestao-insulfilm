@@ -59,7 +59,7 @@ export class ServicoController {
     async atualizar(req: FastifyRequest<{ Params: { id: string } }>, res: FastifyReply) {
         const { id } = req.params
         const data = AtualizarServicoSchemas.parse(req.body)
-        const atualizarServicoService = new AtualizarServicoService(servicoRepository)
+        const atualizarServicoService = new AtualizarServicoService(servicoRepository, estoqueRepository)
         try {
             const servico = await atualizarServicoService.execute(id, data)
             return res.status(200).send(servico)

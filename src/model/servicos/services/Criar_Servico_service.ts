@@ -18,6 +18,7 @@ export class CriarServicoService {
         const material = await this.estoqueRepository.BuscarPorId(data.materialId);
         if (!material) throw new Error("Material nao encontrado no estoque");
         if(data.metragem_usada > material.quantidade) throw new Error("Quantidade de materiais insuficiente");
+        
         const carro = await this.carroRepository.BuscarPorId(data.carroId);
         if (!carro) throw new Error("Carro nao encontrado");
         if (carro.clienteId !== data.clienteId) throw new Error("Carro não pertence ao cliente");
