@@ -1,7 +1,8 @@
-import { BuscarMaterialService } from './../../estoque/services/Buscar_Material_service';
 import type { IServicoRepository } from "../repositories/IServico_repository";
 import type { IEstoqueRepository } from "../../estoque/repositories/IEstoque_repository";
 import { AtualizarServicoDTO} from "../dtos/ServicoDTOs";
+import { NotFoundError } from "../../../shared/errors/App_errors";
+import { BadRequestError } from "../../../shared/errors/App_errors";
 
 export class AtualizarServicoService {
     constructor(private servicoRepository: IServicoRepository, private estoqueRepository: IEstoqueRepository) {}
@@ -13,11 +14,11 @@ export class AtualizarServicoService {
 
         if(data.metragem_usada){
             const material = await this.estoqueRepository.BuscarPorId(servicoExistente.materialId);
-            if (!material) throw new Error("Material nao encontrado no estoque");
-            if(data.metragem_usada > material.quantidade) throw new Error("Quantidade de materiais em estoque insuficiente");
+            if (!material) throw new NotFoundError("Material nao encontrado no estoque");
+            if(data.metragem_usada > material.quantidade) throw new BadRequestError("Quantidade de materiais em estoque insuficiente");
             const diferenca = data.metragem_usada - servicoExistente.metragem_usada;
             if(diferenca > 0){
-                if(diferenca > material.quantidade) throw new Error("Quantidade de materiais em estoque insuficiente. Há apenas ${material.quantidade} ${material.unidade}");
+                if(diferenca > material.quantidade) throw new BadRequestError("Quantidade de materiais em estoque insuficiente. Há apenas ${material.quantidade} ${material.unidade}");
 
                 await this.estoqueRepository.registrarBaixa(servicoExistente.materialId, { 
                     quantidade: diferenca,

@@ -1,4 +1,6 @@
 import { IEstoqueRepository } from "../repositories/IEstoque_repository";
+import { NotFoundError } from "../../../shared/errors/App_errors";
+import { ConflictError } from "../../../shared/errors/App_errors";
 
 export class ExcluirEstoqueService {
     constructor(private estoqueRepository: IEstoqueRepository) {}
@@ -6,10 +8,10 @@ export class ExcluirEstoqueService {
     async execute(id: string) {
         const materialExistente = await this.estoqueRepository.BuscarPorId(id);
         if (!materialExistente) {
-            throw new Error("Material nao encontrado");
+            throw new NotFoundError("Material nao encontrado");
         }
         if(materialExistente.quantidade > 0) {
-            throw new Error("Material nao pode ser excluido, pois ainda possui quantidade em estoque, zere a quantidade primeiro");
+            throw new ConflictError("Material nao pode ser excluido, pois ainda possui quantidade em estoque, zere a quantidade primeiro");
         }
         await this.estoqueRepository.excluir(id);
     }

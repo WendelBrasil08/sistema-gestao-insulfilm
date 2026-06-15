@@ -6,6 +6,7 @@ import { carroRoutes } from "./model/carros/routes/Carro_routes";
 import { servicoRoutes } from "./model/servicos/routes/Servico_routes";
 import { EstoqueRoutes } from "./model/estoque/routes/Estoque_routes";
 import { authRoutes } from "./model/auth/Routes/Auth_routes";
+import { errorHandler } from "./shared/errors/errorHandler";
 
 export const app = Fastify({
     logger: true,
@@ -19,3 +20,5 @@ app.register(carroRoutes);
 app.register(servicoRoutes);
 app.register(EstoqueRoutes);
 app.register(authRoutes);
+
+app.setErrorHandler(errorHandler);

@@ -14,14 +14,8 @@ export class ServicoController {
     async criar(req: FastifyRequest, res: FastifyReply) {
         const body = CriarServicoSchemas.parse(req.body)
         const criarServicoService = new CriarServicoService(estoqueRepository, servicoRepository, clienteRepository, carroRepository);
-     
-        try {   
-            const servico = await criarServicoService.execute(body)         
-            return res.status(201).send(servico)
-        } catch (err) {
-            const message = err instanceof Error ? err.message : "Erro ao criar serviço";
-            return res.status(400).send({ message });
-        }
+        const servico = await criarServicoService.execute(body)         
+        return res.status(201).send(servico)
     }
 
     async listar(req: FastifyRequest, res: FastifyReply) {
@@ -34,13 +28,8 @@ export class ServicoController {
     async buscar(req: FastifyRequest<{ Params: { id: string } }>, res: FastifyReply) {
         const { id } = req.params
         const buscarServicoService = new BuscarServicoService(servicoRepository)
-        try {
             const servico = await buscarServicoService.execute(id)
             return res.status(200).send(servico)
-        } catch (err) {
-            const message = err instanceof Error ? err.message : "Erro ao buscar serviço";
-            return res.status(404).send({ message });
-        }
     }
 
     async buscarPorStatus(req: FastifyRequest<{ Params: { status: ServicoStatus } }>, res: FastifyReply) {
@@ -60,39 +49,22 @@ export class ServicoController {
         const { id } = req.params
         const data = AtualizarServicoSchemas.parse(req.body)
         const atualizarServicoService = new AtualizarServicoService(servicoRepository, estoqueRepository)
-        try {
-            const servico = await atualizarServicoService.execute(id, data)
-            return res.status(200).send(servico)
-        } catch (err) {
-            const message = err instanceof Error ? err.message : "Erro ao atualizar serviço";
-            return res.status(400).send({ message });
-        }
+        const servico = await atualizarServicoService.execute(id, data)
+        return res.status(200).send(servico)
     }
 
     async atualizarStatus(req: FastifyRequest<{ Params: { id: string } }>, res: FastifyReply) {
         const { id } = req.params
-
-        try {
-            const data = AtualizarStatusSchema.parse(req.body)
-            const atualizarStatusServicoService = new AtualizarStatusServicoService(servicoRepository)
-            const servico = await atualizarStatusServicoService.execute(id, data)
-            return res.status(200).send(servico)
-
-        } catch (err) {
-            const message = err instanceof Error ? err.message : "Erro ao atualizar status do serviço";
-            return res.status(400).send({ message });
-        }
+        const data = AtualizarStatusSchema.parse(req.body)
+        const atualizarStatusServicoService = new AtualizarStatusServicoService(servicoRepository)
+        const servico = await atualizarStatusServicoService.execute(id, data)
+        return res.status(200).send(servico)
     }
 
     async excluir(req: FastifyRequest<{ Params: { id: string } }>, res: FastifyReply) {
         const { id } = req.params
         const excluirServicoService = new ExcluirServicoService(servicoRepository)
-        try {
-            await excluirServicoService.execute(id)
-            return res.status(204).send("Serviço excluído com sucesso")
-        } catch (err) {
-            const message = err instanceof Error ? err.message : "Erro ao excluir serviço";
-            return res.status(400).send({ message });
-        }
+        await excluirServicoService.execute(id)
+        return res.status(204).send("Serviço excluído com sucesso")
     }
 }

@@ -1,5 +1,6 @@
 import type { IEstoqueRepository } from "../repositories/IEstoque_repository";
 import type { EntradaEstoqueDTO } from "../dtos/EstoqueDTOs";
+import { NotFoundError } from "../../../shared/errors/App_errors";
 
 export class RegistrarEntradaEstoqueService {
     constructor(private estoqueRepository: IEstoqueRepository) {}
@@ -7,7 +8,7 @@ export class RegistrarEntradaEstoqueService {
     async execute(id: string, data: EntradaEstoqueDTO) {
         const materialExistente = await this.estoqueRepository.BuscarPorId(id);
         if (!materialExistente) {
-            throw new Error("Material nao encontrado");
+            throw new NotFoundError("Material nao encontrado");
         }
         return await this.estoqueRepository.registrarEntrada(id, data);
     }

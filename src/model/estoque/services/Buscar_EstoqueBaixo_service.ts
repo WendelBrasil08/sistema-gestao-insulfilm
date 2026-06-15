@@ -1,4 +1,3 @@
-import it from "zod/v4/locales/it.js";
 import type { IEstoqueRepository } from "../repositories/IEstoque_repository";
 
 export class BuscarEstoqueBaixoService {

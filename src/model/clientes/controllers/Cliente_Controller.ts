@@ -11,15 +11,11 @@ import {
 export class ClienteController {
     async criar(request: FastifyRequest, reply: FastifyReply) {
 
-            const body = CriarClienteSchemas.parse(request.body);
-            const service = new CriarClienteService(clienteRepository);
-            try {
-                const cliente = await service.execute(body);
-                return reply.status(201).send(cliente);
-            } catch (err) {
-                const message = err instanceof Error ? err.message : "Erro ao criar cliente";
-                return reply.status(409).send({ message });
-            }
+        const body = CriarClienteSchemas.parse(request.body);
+        const service = new CriarClienteService(clienteRepository);
+            
+        const cliente = await service.execute(body);
+        return reply.status(201).send(cliente);
     }
 
 
@@ -32,34 +28,22 @@ export class ClienteController {
     async buscar(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
         const { id } = request.params;
         const service = new BuscarClientePorIdService(clienteRepository);
-       try {
-           const cliente = await service.execute(id);
-           return reply.status(200).send(cliente);
-       } catch (error) {
-           return reply.status(404).send({ error: "Cliente não encontrado" });
-       }
+        const cliente = await service.execute(id);
+        return reply.status(200).send(cliente);
     }
 
     async atualizar(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
         const { id } = request.params;
         const body = AtualizarClienteSchemas.parse(request.body);
         const service = new AtualizarClienteService(clienteRepository);
-        try {
-            const cliente = await service.execute(id, body);
-            return reply.status(200).send(cliente);
-        } catch (error) {
-            return reply.status(404).send({ error: "Cliente nao encontrado" });
-        }
+        const cliente = await service.execute(id, body);
+        return reply.status(200).send(cliente);
     }
 
     async excluir(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
         const { id } = request.params;
         const service = new ExcluirClienteService(clienteRepository);
-        try {
-            await service.execute(id);
-            return reply.status(200).send();
-        } catch (error) {
-            return reply.status(404).send({ error: "Cliente nao encontrado" });
-        }
+        await service.execute(id);
+        return reply.status(200).send();
     }
 }
